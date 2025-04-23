@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun Questions for You!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #ffe6f0;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    h2 {
+      color: #d63384;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options label {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #fff0f5;
+      border: 1px solid #d63384;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .text-answer {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #d63384;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #c2185b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="quiz-container">
+    <h2 id="question-title"></h2>
+    <div class="options" id="options-container"></div>
+    <textarea id="text-answer" class="text-answer" style="display:none" placeholder="Type your answer here..."></textarea>
+    <button onclick="nextQuestion()">Next</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        text: "Mera naam sunte hi tumhara dimag kya kehta hai?",
+        options: [
+          "Yeh fir aa gaya! 😅",
+          "Cute sa pagal... 🤭",
+          "Kaun Ayush? 🤔",
+          "Bas smile aati hai yaar. 😊"
+        ]
+      },
+      {
+        text: "Agar main ek chai hota, to kis flavor ka hota?",
+        options: [
+          "Adrakh wali strong 😤",
+          "Sweet and kadak ☕",
+          "Bina shakkar wali – healthy types 😎",
+          "Green tea – sabka mood kharaab karne wala 😂"
+        ]
+      },
+      {
+        text: "Tumhare hisaab se main tumhare liye kya hoon?",
+        options: [
+          "Ek homework jo kabhi complete nahi hota 📚",
+          "Ek meme jo baar baar dekhne ka mann kare 😹",
+          "Acha banda par thoda overacting karta hai 😜",
+          "Cute banda, thoda pyaar ka bhooka 🐶❤️"
+        ]
+      },
+      {
+        text: "Kabhi aisa laga ki main tumhare sapno mein aaya?",
+        options: [
+          "Haan, par sapne mein bhi ignore kiya maine 😴",
+          "Haan, biryani lekar aaya tha 🍛",
+          "Nahi, main Sapna dekh rahi thi 😆",
+          "Tum sapne mein nahi, dimaag mein ho re baba! 🙈"
+        ]
+      },
+      {
+        text: "Agar main ek app hota, to kaunsa hota?",
+        options: [
+          "WhatsApp – hamesha active 🤳",
+          "Instagram – bas reels banata rehta",
+          "Zomato – pyaar aur khana dono deliver karta 😋",
+          "Aarogya Setu – ab toh kisi ko yaad bhi nahi 🤷"
+        ]
+      },
+      {
+        text: "Mujhse last baar gussa kab aaya tha?",
+        options: [
+          "Jab tune book ke bare me bataya  😤",
+          "Jab tune mujhe tag nahi kiya meme mein 😑",
+          "Kabhi nahi, tu cutie hai 🥺",
+          "Main toh roz thoda thoda hoti hoon 😜"
+        ]
+      },
+      {
+        text: "Agar main ek animal hota, to kaunsa hota?",
+        options: [
+          "Billi – sab jagah muh maarne wala 🐱",
+          "Kutte jaisa wafadar 🐶",
+          "Panda – cute, lazy, aur emotional 🐼",
+          "Chhipkali – har jagah chipak jaata hai 😬"
+        ]
+      },
+      {
+        text: "Mujhe ignore karne ka course kahan se kiya tha?",
+        options: [
+          "Harvard University",
+          "YouTube se seekha 🤓",
+          "Tumhara natural talent hai",
+          "Mujhe bhi nahi pata kaise ho jaata hai 😅"
+        ]
+      },
+      {
+        text: "Agar tum mujhe ek naam dogi, kya hoga?",
+        options: [],
+        textBox: true
+      },
+      {
+        text: "Kya main tumhare mood ka WiFi hoon?",
+        options: [
+          "Kabhi connect hota hai, kabhi nahi",
+          "Strong signal deta hai 😏",
+          "Disconnect hi achha lagta hai",
+          "Tu data bhi bachata hai, pyaar bhi deta hai 😘"
+        ]
+      },
+      {
+        text: "Kya tum mere efforts ko dekh pati ho?",
+        options: [
+          "Haan, har waqt dekhti hoon 😍",
+          "Kabhi dekhti hoon, kabhi ignore kar deti hoon 😜",
+          "Dekhti hoon, par kya pata kis mood mein hoon 😅",
+          "Nahi dekhti hoon, mujhe toh sab aise hi lagta hai 🤭"
+        ]
+      }
+    ];
+
+    let currentQuestion = 0;
+
+    function showQuestion() {
+      const question = questions[currentQuestion];
+      document.getElementById("question-title").textContent = question.text;
+      const optionsContainer = document.getElementById("options-container");
+      optionsContainer.innerHTML = "";
+
+      if (question.textBox) {
+        document.getElementById("text-answer").style.display = "block";
+      } else {
+        document.getElementById("text-answer").style.display = "none";
+        question.options.forEach(option => {
+          const label = document.createElement("label");
+          label.innerHTML = `<input type='radio' name='option' value='${option}'> ${option}`;
+          optionsContainer.appendChild(label);
+        });
+      }
+    }
+
+    function nextQuestion() {
+      // (In real site: store answer here)
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        document.getElementById("quiz-container").innerHTML = "<h2>Thank you for answering! 💖</h2>";
+      }
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
